@@ -98,10 +98,10 @@
 #define REST 0
 
 // change this to make the song slower or faster
-int tempo = 144;
+int tempo = 154;
 
 // change this to whichever pin you want to use
-int buzzer = 11;
+int buzzer = 13;
 
 // notes of the moledy followed by the duration.
 // a 4 means a quarter note, 8 an eighteenth , 16 sixteenth, so on

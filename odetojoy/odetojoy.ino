@@ -98,7 +98,7 @@
 #define REST 0
 
 // change this to make the song slower or faster
-int tempo=114; 
+int tempo=148; 
 
 // change this to whichever pin you want to use
 int buzzer = 11;

@@ -1,10 +1,13 @@
 /* 
   Never Gonna Give you Up
   Connect a piezo buzzer or speaker to pin 11 or select a new pin.
-  More songs available at https://github.com/robsoncouto/arduino-songs                                            
-                                              
-                                              Robson Couto, 2019
+                                      
+ Robson Couto, 2019
 */
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+// set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x27,16,2);
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -96,25 +99,33 @@
 #define NOTE_DS8 4978
 #define REST      0
 
-
 // change this to make the song slower or faster
-int tempo = 114;
+int tempo = 130;
 
 // change this to whichever pin you want to use
 int buzzer = 11;
 
-// notes of the moledy followed by the duration.
+// the LED outputs
+int whiteLED2 = 2; //white LED to Pin 2
+int greenLED3 = 3; //Green LED to Pin 3
+int blueLED4 = 4; //Blue LED to Pin 4
+int redLED5 = 5; //Red LED to pin 5
+
+// notes of the melody followed by the duration.
 // a 4 means a quarter note, 8 an eighteenth , 16 sixteenth, so on
 // !!negative numbers are used to represent dotted notes,
 // so -4 means a dotted quarter note, that is, a quarter plus an eighteenth!!
 int melody[] = {
-
   // Never Gonna Give You Up - Rick Astley
   // Score available at https://musescore.com/chlorondria_5/never-gonna-give-you-up_alto-sax
   // Arranged by Chlorondria
 
-  NOTE_D5,-4, NOTE_E5,-4, NOTE_A4,4, //1
+  NOTE_D5,-4, NOTE_E5,-4, NOTE_A4,4,//1
+ //digitalWrite(blueLED4, HIGH),
+ //digitalWrite(blueLED4, LOW,
   NOTE_E5,-4, NOTE_FS5,-4, NOTE_A5,16, NOTE_G5,16, NOTE_FS5,8,
+ //digitalWrite(greenLED3, HIGH),
+ //digitalWrite(greenLED3, LOW),
   NOTE_D5,-4, NOTE_E5,-4, NOTE_A4,2,
   NOTE_A4,16, NOTE_A4,16, NOTE_B4,16, NOTE_D5,8, NOTE_D5,16,
   NOTE_D5,-4, NOTE_E5,-4, NOTE_A4,4, //repeat from 1
@@ -163,7 +174,7 @@ int melody[] = {
   NOTE_E5,-8, NOTE_E5,-8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
   NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,4, NOTE_A4,8, 
 
-   NOTE_E5,4, NOTE_D5,2, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16, //40
+  NOTE_E5,4, NOTE_D5,2, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16, //40
   NOTE_FS5,-8, NOTE_FS5,-8, NOTE_E5,-4, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
   NOTE_A5,4, NOTE_CS5,8, NOTE_D5,-8, NOTE_CS5,16, NOTE_B4,8, NOTE_A4,16, NOTE_B4,16, NOTE_D5,16, NOTE_B4,16,
   NOTE_D5,4, NOTE_E5,8, NOTE_CS5,-8, NOTE_B4,16, NOTE_A4,4, NOTE_A4,8,  
@@ -191,10 +202,16 @@ int wholenote = (60000 * 4) / tempo;
 int divider = 0, noteDuration = 0;
 
 void setup() {
+  lcd.begin();  //initialize the lcd
+  lcd.backlight();  //open the backlight 
+  lcd.setCursor(0,0);
+  lcd.print("Never Gonna Give");
+  lcd.setCursor(5,1);
+  lcd.print("You Up");
+ 
   // iterate over the notes of the melody.
   // Remember, the array is twice the number of notes (notes + durations)
   for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
-
     // calculates the duration of each note
     divider = melody[thisNote + 1];
     if (divider > 0) {
@@ -216,7 +233,6 @@ void setup() {
     noTone(buzzer);
   }
 }
-
 void loop() {
   // no need to repeat the melody.
 }
